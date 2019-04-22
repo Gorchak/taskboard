@@ -3,8 +3,9 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbartopComponent } from './navbartop/navbartop.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { NavbartopComponent } from './components/navbartop/navbartop.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DragDropModule } from '@angular/cdk/drag-drop'
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]
