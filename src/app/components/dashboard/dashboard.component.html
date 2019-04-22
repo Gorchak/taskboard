@@ -29,6 +29,11 @@
     <div class="add-task-btn">
       + Add list
     </div>
+    <div class="add-task-form">
+      <form [formGroup]="addTaskForm" novalidate (ngSubmit)="submit()">
+        
+      </form>
+    </div>
   </div>
 </div>
 
