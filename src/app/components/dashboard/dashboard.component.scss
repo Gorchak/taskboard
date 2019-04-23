@@ -19,7 +19,8 @@
     background: white;
     margin-bottom: 8px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    // justify-content: space-between;
     cursor: pointer;
 
     &:last-child{
@@ -31,6 +32,11 @@
         display: block;
       }
     }
+}
+
+.dasboard-task__header{
+  display: flex;
+  justify-content: space-between;
 }
 
 .task-edit__icon{
@@ -101,7 +107,42 @@
 
 
 .dashboard-column__name{
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 10px;
+  cursor: pointer;
+
+  &:hover{
+    .list-edit__icon{
+      display: block;
+    }
+  }
+}
+
+.dashboard-column-name__value{
+  display: flex;
+  width: 100%;
+
+  i{
+    font-size: 12px;
+    opacity: 0.4;
+  }
+}
+
+.list-edit__icon{
+  cursor: pointer;
+  margin-left: 5px;
+  display: none;
+  i{
+    font-size: 14px;
+    opacity: 0.4;
+  }
+
+  &:hover{
+    i{
+      opacity: 1;
+    }
+  }
 }
 
 .task-tools{
@@ -120,40 +161,28 @@
   .task-edit__icon{
     display: block;
   }
+
+  .list-edit__icon{
+    display: block;
+  }
+}
+
+.list-tools{
+  display: flex;
+}
+
+.dasboard-task__info{
+  margin: 5px 0 2px;
+}
+
+.dasboard-task-info__date{
+  font-size: 11px;
+  opacity: 0.6;
 }
 
 //////////////
-.example-container {
-    width: 400px;
-    max-width: 100%;
-    margin: 0 25px 25px 0;
-    display: inline-block;
-    vertical-align: top;
-  }
-  
-  .example-list {
-    border: solid 1px #ccc;
-    min-height: 60px;
-    background: white;
-    border-radius: 4px;
-    overflow: hidden;
-    display: block;
-  }
-  
-  .example-box {
-    padding: 20px 10px;
-    border-bottom: solid 1px #ccc;
-    color: rgba(0, 0, 0, 0.87);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    cursor: move;
-    background: white;
-    font-size: 14px;
-  }
-  
+
+// Drag and drop
   .cdk-drag-preview {
     box-sizing: border-box;
     border-radius: 4px;
@@ -161,7 +190,6 @@
                 0 8px 10px 1px rgba(0, 0, 0, 0.14),
                 0 3px 14px 2px rgba(0, 0, 0, 0.12);
   }
-  
   .cdk-drag-placeholder {
     opacity: 0;
   }

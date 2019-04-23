@@ -35,30 +35,9 @@ export class DashboardComponent implements OnInit {
   currentListName = '';
   currentTaskName = '';
   editTaskNameTemp = '';
+  editListNameTemplate = '';
   deleteTaskName = '';
-
-  // todo = [
-  //   'Get to work',
-  //   'Pick up groceries',
-  //   'Go home',
-  //   'Fall asleep'
-  // ];
-
-  // done = [
-  //   'Get up',
-  //   'Brush teeth',
-  //   'Take a shower',
-  //   'Check e-mail',
-  //   'Walk dog'
-  // ];
-
-  // test1 = [
-  //   'test up',
-  //   'wrwrew teeth',
-  //   'Take a werrrrrr',
-  //   'Check e-mssssssssssssail',
-  //   'Wadddddddddddlk ddas'
-  // ];
+  deleteListName = '';
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
@@ -90,9 +69,17 @@ export class DashboardComponent implements OnInit {
 
   addTask(list) {
     if (this.addTaskForm.valid) {
+      let currentDate = new Date();
+      let day = +currentDate.getDate();
+      let month = 1 +currentDate.getMonth();
+      let year = +currentDate.getFullYear();
+
       let taskItem = {
-        name: this.addTaskForm.controls.taskName.value
+        name: this.addTaskForm.controls.taskName.value,
+        created: day + '.' + month + '.' + year,
+        edited: String
       }
+
       let listIndex = this.lists.indexOf(list);
       this.lists[listIndex].tasks.push(taskItem);
 
@@ -110,12 +97,29 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteTask(list, item) {
-    debugger;
     let index = list.tasks.indexOf(item);
-
     list.tasks.splice(index, 1);
     this.tasksService.saveList(this.lists);
     this.deleteTaskName = '';
+  }
+
+  
+  deleteList(list) {
+    let index = this.lists.indexOf(list);
+    this.lists.splice(index, 1);
+    this.tasksService.saveList(this.lists);
+    this.deleteListName = '';
+  }
+
+  changeDate(item) {
+    let currentDate = new Date();
+    let day = +currentDate.getDate();
+    let month = 1 +currentDate.getMonth();
+    let year = +currentDate.getFullYear();
+
+    item.edited = day + '.' + month + '.' + year
+
+    this.tasksService.saveList(this.lists);
   }
 
   ngOnInit() {
