@@ -6,7 +6,8 @@ import { AppComponent } from './app.component';
 import { NavbartopComponent } from './components/navbartop/navbartop.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DragDropModule } from '@angular/cdk/drag-drop'
-import { FormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule  }   from '@angular/forms';
+import { StorageServiceModule } from 'ngx-webstorage-service';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,9 @@ import { FormsModule }   from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     DragDropModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    StorageServiceModule
   ],
   providers: [],
   bootstrap: [AppComponent]
