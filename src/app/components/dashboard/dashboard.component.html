@@ -1,80 +1,100 @@
-<div class="dashboard-container">
-  <div class="dashboard-column">
-    <div class="dashboard-task">
-      <div class="task-name">
-        Test name
+<div class="dashboard-container" cdkDropListGroup>
+  <div class="dashboard-column" *ngFor="let list of lists" cdkDropList [cdkDropListData]="list.tasks"
+    (cdkDropListDropped)="drop($event)">
+    <div class="dashboard-column__name">
+      {{list.name}}
+    </div>
+    <div class="dashboard-task" cdkDrag *ngFor="let task of list.tasks">
+      <div class="task-name" *ngIf="currentTaskName != task.name">
+        {{task.name}}
       </div>
-      <div class="task-edit__icon">
-        Edit
+      <!-- Edit task name -->
+      <div class="task-name__edit" *ngIf="currentTaskName === task.name">
+        <form novalidate (ngSubmit)="task.name = editTaskNameTemplate; saveList()">
+          <textarea class="input-default" name="name" [(ngModel)]="editTaskNameTemplate"
+            placeholder="Enter task name"></textarea>
+          <div class="form-tools">
+            <button class="btn-default btn-green" [disabled]="!editTaskNameTemplate || !editTaskNameTemplate.length">
+              Save
+            </button>
+            <i class="material-icons" (click)="currentTaskName = ''; editTaskNameTemplate = ''">
+              cancel
+            </i>
+          </div>
+        </form>
+      </div>
+      <!-- Edit/Delete buttons for task-->
+      <div class="task-tools" *ngIf="currentTaskName != task.name">
+        <div class="task-edit__icon" *ngIf="deleteTaskName != task.name"
+          (click)="currentTaskName = task.name; editTaskNameTemplate = task.name">
+          <i class="material-icons">
+            border_color
+          </i>
+        </div>
+        <div class="task-edit__icon" *ngIf="deleteTaskName != task.name" (click)='deleteTaskName = task.name'>
+          <i class="material-icons">
+            delete
+          </i>
+        </div>
+
+        <!--Yes/No buttons for delete task-->
+        <div class="task-delete-tools" *ngIf="deleteTaskName === task.name">
+          <span class="ask-user-message">Delete: </span>
+          <div class="task-edit__icon" (click)="deleteTask(list, task)">
+            <i class="material-icons color__green">
+              check_circle
+            </i>
+          </div>
+          <div class="task-edit__icon" (click)="currentTaskName = ''; deleteTaskName = ''">
+            <i class="material-icons color__red">
+              cancel
+            </i>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="dashboard-task">
-      <div class="task-name">
-        Test name
-      </div>
-      <div class="task-edit__icon">
-        Edit
-      </div>
+
+    <!-- Add new task to list -->
+    <div class="add-task-btn" *ngIf="currentListName != list.name"
+      (click)="isShowTaskForm = true; currentListName = list.name">
+      <i class="material-icons">
+        add
+      </i> Add task
     </div>
-    <div class="dashboard-task">
-      <div class="task-name">
-        Test name
-      </div>
-      <div class="task-edit__icon">
-        Edit
-      </div>
+    <div class="add-task-form" *ngIf="isShowTaskForm && currentListName == list.name">
+      <form [formGroup]='addTaskForm' novalidate (ngSubmit)="addTask(list)">
+        <textarea class="input-default" name="name" formControlName="taskName" placeholder="Enter task name"></textarea>
+        <div class="form-tools">
+          <button class="btn-default btn-green" [disabled]="addTaskForm.invalid">
+            Add
+          </button>
+          <i class="material-icons" (click)="isShowTaskForm = false; currentListName = ''; addTaskForm.reset()">
+            cancel
+          </i>
+        </div>
+      </form>
     </div>
   </div>
+
+  <!-- Add new list to dashboard -->
   <div class="dashboard-btn-container">
-    <div class="add-task-btn">
-      + Add list
+    <div class="add-task-btn" *ngIf="!isShowForm" (click)="isShowForm = true">
+      <i class="material-icons">
+        add
+      </i> Add list
     </div>
-    <div class="add-task-form">
-      <form [formGroup]="addTaskForm" novalidate (ngSubmit)="submit()">
-        
+    <div class="add-task-form" *ngIf="isShowForm">
+      <form [formGroup]="addListForm" novalidate (ngSubmit)="addList()">
+        <input class="input-default" name="name" formControlName="listName" placeholder="Enter list name" />
+        <div class="form-tools">
+          <button class="btn-default btn-green" [disabled]="addListForm.invalid">
+            Add
+          </button>
+          <i class="material-icons" (click)="isShowForm = false; addListForm.reset()">
+            cancel
+          </i>
+        </div>
       </form>
     </div>
   </div>
 </div>
-
-
-<!-- <div class="example-container">
-  <h2>To do</h2>
-  <div
-    cdkDropList
-    #todoList="cdkDropList"
-    [cdkDropListData]="todo"
-    [cdkDropListConnectedTo]="[doneList, test1list]"
-    class="example-list"
-    (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
-  </div>
-</div>
-
-<div class="example-container">
-  <h2>Test 1</h2>
-
-  <div
-    cdkDropList
-    #test1list="cdkDropList"
-    [cdkDropListData]="test1"
-    [cdkDropListConnectedTo]="[doneList, todoList]"
-    class="example-list"
-    (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let item of test1" cdkDrag>{{item}}</div>
-  </div>
-</div>
-
-<div class="example-container">
-  <h2>Done</h2>
-
-  <div
-    cdkDropList
-    #doneList="cdkDropList"
-    [cdkDropListData]="done"
-    [cdkDropListConnectedTo]="[todoList, test1list]"
-    class="example-list"
-    (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
-  </div>
-</div> -->

@@ -18,10 +18,32 @@
     padding: 8px;
     background: white;
     margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
 
     &:last-child{
         margin-bottom: 0;
     }
+
+    &:hover{
+      .task-edit__icon{
+        display: block;
+      }
+    }
+}
+
+.task-edit__icon{
+  cursor: pointer;
+  opacity: 0.4;
+  display: none;
+  i{
+    font-size: 14px;
+  }
+
+  &:hover{
+    opacity: 0.8;
+  }
 }
 
 .dashboard-btn-container{
@@ -37,13 +59,68 @@
   display: flex;
   align-items: center;
   padding: 6px 8px;
-  font-weight: bold;
   color: white;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   cursor: pointer;
+
+  i{
+    font-size: 18px;
+    margin-right: 5px;
+  }
 }
 
+.add-task-form{
+  background: $background-grey;
+  padding: 5px;
+  
+  form{
+    display: flex;
+    flex-direction: column;
+  }
+
+  textarea{
+    resize: none;
+  }
+}
+
+.form-tools{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;  
+  margin-top: 3px;
+
+  button{
+    margin-right: 5px;
+  }
+
+  i{
+    cursor: pointer;
+  }
+}
+
+
+.dashboard-column__name{
+  margin-bottom: 10px;
+}
+
+.task-tools{
+  display: flex;
+}
+
+.task-edit__icon{
+  margin-left: 5px;
+
+  
+}
+
+.task-delete-tools{
+  display: flex;
+
+  .task-edit__icon{
+    display: block;
+  }
+}
 
 //////////////
 .example-container {
