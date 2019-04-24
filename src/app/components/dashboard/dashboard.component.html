@@ -2,56 +2,115 @@
   <div class="dashboard-column" *ngFor="let list of lists" cdkDropList [cdkDropListData]="list.tasks"
     (cdkDropListDropped)="drop($event)">
     <div class="dashboard-column__name">
-      {{list.name}}
-    </div>
-    <div class="dashboard-task" cdkDrag *ngFor="let task of list.tasks">
-      <div class="task-name" *ngIf="currentTaskName != task.name">
-        {{task.name}}
+      <div class="dashboard-column-name__value" *ngIf="editListName != list.name"
+        (click)="editListName = list.name; editListNameTemplate = list.name">
+        {{list.name}}
       </div>
-      <!-- Edit task name -->
-      <div class="task-name__edit" *ngIf="currentTaskName === task.name">
-        <form novalidate (ngSubmit)="task.name = editTaskNameTemplate; saveList()">
-          <textarea class="input-default" name="name" [(ngModel)]="editTaskNameTemplate"
-            placeholder="Enter task name"></textarea>
+      <!-- Edit list name -->
+      <div class="task-name__edit" *ngIf="editListName === list.name">
+        <form novalidate (ngSubmit)="list.name = editListNameTemplate; saveList()">
+          <input class="input-default" name="name" [(ngModel)]="editListNameTemplate" placeholder="Enter list name" />
           <div class="form-tools">
-            <button class="btn-default btn-green" [disabled]="!editTaskNameTemplate || !editTaskNameTemplate.length">
+            <button class="btn-default btn-green" [disabled]="!editListNameTemplate || !editListNameTemplate.length">
               Save
             </button>
-            <i class="material-icons" (click)="currentTaskName = ''; editTaskNameTemplate = ''">
+            <i class="material-icons" (click)="editListName = ''; editListNameTemplate = ''">
               cancel
             </i>
           </div>
         </form>
       </div>
-      <!-- Edit/Delete buttons for task-->
-      <div class="task-tools" *ngIf="currentTaskName != task.name">
-        <div class="task-edit__icon" *ngIf="deleteTaskName != task.name"
-          (click)="currentTaskName = task.name; editTaskNameTemplate = task.name">
+      <div class="list-tools">
+        <div class="list-edit__icon" *ngIf="deleteListName != list.name && editListName != list.name"
+          (click)="editListName = list.name; editListNameTemplate = list.name">
           <i class="material-icons">
             border_color
           </i>
         </div>
-        <div class="task-edit__icon" *ngIf="deleteTaskName != task.name" (click)='deleteTaskName = task.name'>
+        <div class="list-edit__icon" *ngIf="deleteListName != list.name && !editListNameTemplate"
+          (click)='deleteListName = list.name'>
           <i class="material-icons">
             delete
           </i>
         </div>
+      </div>
 
-        <!--Yes/No buttons for delete task-->
-        <div class="task-delete-tools" *ngIf="deleteTaskName === task.name">
-          <span class="ask-user-message">Delete: </span>
-          <div class="task-edit__icon" (click)="deleteTask(list, task)">
-            <i class="material-icons color__green">
-              check_circle
+      <!--Yes/No buttons for delete task-->
+      <div class="task-delete-tools" *ngIf="deleteListName === list.name">
+        <span class="ask-user-message">Delete: </span>
+        <div class="list-edit__icon" (click)="deleteList(list)">
+          <i class="material-icons color__green">
+            check_circle
+          </i>
+        </div>
+        <div class="list-edit__icon" (click)="deleteListName = ''; deleteTaskName = ''">
+          <i class="material-icons color__red">
+            cancel
+          </i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Repeat tasks -->
+    <div class="dashboard-task" cdkDrag *ngFor="let task of list.tasks">
+      <div class="dasboard-task__header">
+        <div class="task-name" *ngIf="currentTaskName != task.name" (click)="openDialog()">
+          {{task.name}}
+        </div>
+        <!-- Edit task name -->
+        <div class="task-name__edit" *ngIf="currentTaskName === task.name">
+          <form novalidate (ngSubmit)="task.name = editTaskNameTemplate; changeDate(task); saveList()">
+            <textarea class="input-default" name="name" [(ngModel)]="editTaskNameTemplate"
+              placeholder="Enter task name"></textarea>
+            <div class="form-tools">
+              <button class="btn-default btn-green" [disabled]="!editTaskNameTemplate || !editTaskNameTemplate.length">
+                Save
+              </button>
+              <i class="material-icons" (click)="currentTaskName = ''; editTaskNameTemplate = ''">
+                cancel
+              </i>
+            </div>
+          </form>
+        </div>
+        <!-- Edit/Delete buttons for task-->
+        <div class="task-tools" *ngIf="currentTaskName != task.name">
+          <div class="task-edit__icon" *ngIf="deleteTaskName != task.name"
+            (click)="currentTaskName = task.name; editTaskNameTemplate = task.name">
+            <i class="material-icons">
+              border_color
             </i>
           </div>
-          <div class="task-edit__icon" (click)="currentTaskName = ''; deleteTaskName = ''">
-            <i class="material-icons color__red">
-              cancel
+          <div class="task-edit__icon" *ngIf="deleteTaskName != task.name" (click)='deleteTaskName = task.name'>
+            <i class="material-icons">
+              delete
             </i>
+          </div>
+
+          <!--Yes/No buttons for delete task-->
+          <div class="task-delete-tools" *ngIf="deleteTaskName === task.name">
+            <span class="ask-user-message">Delete: </span>
+            <div class="task-edit__icon" (click)="deleteTask(list, task)">
+              <i class="material-icons color__green">
+                check_circle
+              </i>
+            </div>
+            <div class="task-edit__icon" (click)="currentTaskName = ''; deleteTaskName = ''">
+              <i class="material-icons color__red">
+                cancel
+              </i>
+            </div>
           </div>
         </div>
       </div>
+      <div class="dasboard-task__info">
+        <div class="dasboard-task-info__marker">
+
+        </div>
+        <div class="dasboard-task-info__date">
+          {{task.created}}
+        </div>
+      </div>
+
     </div>
 
     <!-- Add new task to list -->

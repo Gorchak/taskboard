@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { TasksService } from '../../services/tasks.service'
+import { TasksService } from '../../services/tasks.service';
+import { TaskDetailsComponent } from '../../components/task-details/task-details.component';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +13,7 @@ import { TasksService } from '../../services/tasks.service'
 export class DashboardComponent implements OnInit {
 
   constructor(
+    public dialog: MatDialog,
     private tasksService: TasksService
   ) {
     this.addTaskForm = new FormGroup({
@@ -30,35 +33,23 @@ export class DashboardComponent implements OnInit {
 
   lists: Array<any>;
   listsNames: Array<string>;
-  isShowTaskForm = false;
-  isShowForm = false;
-  currentListName = '';
-  currentTaskName = '';
-  editTaskNameTemp = '';
-  deleteTaskName = '';
+  isShowTaskForm: Boolean;
+  isShowForm: Boolean;
+  currentListName: String;
+  currentTaskName: String;
+  editTaskNameTemp: String;
+  editListNameTemplate: String;
+  deleteTaskName: String;
+  deleteListName: String;
 
-  // todo = [
-  //   'Get to work',
-  //   'Pick up groceries',
-  //   'Go home',
-  //   'Fall asleep'
-  // ];
+  openDialog(): void {
+    const dialogRef = this.dialog.open(TaskDetailsComponent, {
+    });
 
-  // done = [
-  //   'Get up',
-  //   'Brush teeth',
-  //   'Take a shower',
-  //   'Check e-mail',
-  //   'Walk dog'
-  // ];
-
-  // test1 = [
-  //   'test up',
-  //   'wrwrew teeth',
-  //   'Take a werrrrrr',
-  //   'Check e-mssssssssssssail',
-  //   'Wadddddddddddlk ddas'
-  // ];
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
@@ -90,9 +81,17 @@ export class DashboardComponent implements OnInit {
 
   addTask(list) {
     if (this.addTaskForm.valid) {
+      let currentDate = new Date();
+      let day = +currentDate.getDate();
+      let month = 1 + currentDate.getMonth();
+      let year = +currentDate.getFullYear();
+
       let taskItem = {
-        name: this.addTaskForm.controls.taskName.value
+        name: this.addTaskForm.controls.taskName.value,
+        created: day + '.' + month + '.' + year,
+        edited: String
       }
+
       let listIndex = this.lists.indexOf(list);
       this.lists[listIndex].tasks.push(taskItem);
 
@@ -110,12 +109,29 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteTask(list, item) {
-    debugger;
     let index = list.tasks.indexOf(item);
-
     list.tasks.splice(index, 1);
     this.tasksService.saveList(this.lists);
     this.deleteTaskName = '';
+  }
+
+
+  deleteList(list) {
+    let index = this.lists.indexOf(list);
+    this.lists.splice(index, 1);
+    this.tasksService.saveList(this.lists);
+    this.deleteListName = '';
+  }
+
+  changeDate(item) {
+    let currentDate = new Date();
+    let day = +currentDate.getDate();
+    let month = 1 + currentDate.getMonth();
+    let year = +currentDate.getFullYear();
+
+    item.edited = day + '.' + month + '.' + year
+
+    this.tasksService.saveList(this.lists);
   }
 
   ngOnInit() {
