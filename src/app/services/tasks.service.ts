@@ -27,4 +27,17 @@ export class TasksService {
     return list;
   }
 
+  saveTask(data) {
+    let lists = this.storage.get('Lists');
+
+    let currentList = lists.filter(function(list) {
+      return list.name === data.listName;
+    });
+
+    let listId = lists.indexOf(currentList[0]);
+    lists[listId].tasks[data.taskId] = data.task;
+
+    this.storage.set('Lists', lists);
+  }
+
 }

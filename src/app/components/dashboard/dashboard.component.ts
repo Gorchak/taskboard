@@ -42,8 +42,10 @@ export class DashboardComponent implements OnInit {
   deleteTaskName: String;
   deleteListName: String;
 
-  openDialog(): void {
+  openDialog(listName, id, task): void {
     const dialogRef = this.dialog.open(TaskDetailsComponent, {
+      width: '400px',
+      data: {task: task, taskId: id, listName}
     });
 
     dialogRef.afterClosed().subscribe(result => {

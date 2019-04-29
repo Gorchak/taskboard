@@ -52,9 +52,9 @@
     </div>
 
     <!-- Repeat tasks -->
-    <div class="dashboard-task" cdkDrag *ngFor="let task of list.tasks">
+    <div class="dashboard-task" cdkDrag *ngFor="let task of list.tasks; let id = index;">
       <div class="dasboard-task__header">
-        <div class="task-name" *ngIf="currentTaskName != task.name" (click)="openDialog()">
+        <div class="task-name" *ngIf="currentTaskName != task.name" (click)="openDialog(list.name, id, task)">
           {{task.name}}
         </div>
         <!-- Edit task name -->

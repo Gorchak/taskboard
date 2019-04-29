@@ -1,0 +1,70 @@
+
+
+.dialog-data-name{
+    font-size: 20px;
+    font-weight: 700;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+    i{
+        cursor: pointer;
+        opacity: 0.5;
+    }
+}
+
+.dialog-describtion-button{
+    background-color: rgba(9,30,66,.08);
+    border-radius: 3px;
+    display: block;
+    min-height: 35px;
+    padding: 8px 12px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dialog-list-name{
+    font-size: 12px;
+    margin-top: 5px;
+    opacity: 0.7;
+    span{
+        font-weight: bold;
+        // text-decoration: underline;
+    }
+}
+
+.dialog-header{
+    margin-bottom: 30px;
+}
+
+.dialog-description-title{
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.form-tools{
+    display: flex;
+    align-content: center;
+    margin-top: 5px;
+
+    i{
+        cursor: pointer;
+        margin-left: 5px;
+    }
+}
+
+.dialog-describtion-textarea{
+    textarea{
+        width: 93%;
+    }
+}
+
+.dialog-content{
+    margin-bottom: 10px;
+}
+
+.dialog-description-value{
+    cursor: pointer;
+}
