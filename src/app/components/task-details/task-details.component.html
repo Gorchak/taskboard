@@ -1,3 +1,57 @@
-<p>
-  task-details works!
-</p>
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="dialog-data-name">
+      {{data.task.name}}
+      <i class="material-icons" (click)="onNoClick()">
+        cancel_presentation
+      </i>
+    </div>
+    <div class="dialog-list-name">
+      In the list:
+      <span>
+        {{data.listName}}
+      </span>
+    </div>
+  </div>
+  <div class="dialog-content">
+    <div class="dialog-describtion-container">
+      <div class="dialog-description-title">
+        Description
+      </div>
+      <div class="dialog-describtion-textarea">
+        <ng-template [ngIf]="!isEditDescription" [ngIfElse]="form">
+          <ng-template [ngIf]="!data.task.description" [ngIfElse]="addValue">
+            <div class="dialog-describtion-button"
+              (click)="isEditDescription = true; taskDescription = data.task.description">
+              Add description
+            </div>
+          </ng-template>
+
+          <ng-template #addValue>
+            <div class="dialog-description-value"
+              (click)="isEditDescription = true; taskDescription = data.task.description">
+              {{data.task.description}}
+            </div>
+          </ng-template>
+
+
+        </ng-template>
+        <ng-template #form>
+          <form novalidate
+            (ngSubmit)="data.task.description = taskDescription; isEditDescription = false; saveChanges(data);">
+            <textarea class="input-default" name="name" [(ngModel)]="taskDescription"
+              placeholder="Enter Describtion"></textarea>
+            <div class="form-tools">
+              <button class="btn-default btn-green">
+                Save
+              </button>
+              <i class="material-icons" *ngIf="isEditDescription" (click)="isEditDescription = false;">
+                cancel
+              </i>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
